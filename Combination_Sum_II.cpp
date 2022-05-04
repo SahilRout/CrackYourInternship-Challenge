@@ -3,7 +3,7 @@ public:
     vector<vector<int>> ans;
     void solve(vector<int> arr,int target,int i,vector<int> temp)
     {
-       if(target==0)
+        if(target==0)
         {
             ans.push_back(temp);
             return;
