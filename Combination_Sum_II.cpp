@@ -1,26 +1,26 @@
-class Solution
-{
+class Solution {
 public:
-    bool solve(int arr[], int n, int sum, int Tsum, int i, vector<vector<int>> &dp)
+    vector<vector<int>> ans;
+    void solve(vector<int> arr,int target,int i,vector<int> temp)
     {
-        if (Tsum - sum == sum)
+        if(target==0)
         {
-            return true;
+            ans.push_back(temp);
+            return;
         }
-        if (dp[i][sum] != -1)
-            return dp[i][sum];
-        if (i == n)
+        for(int idx=i;idx<arr.size();idx++)
         {
-            return false;
+            if(idx>i&&arr[idx]==arr[idx-1])continue;
+            if(arr[idx]>target) break;
+            temp.push_back(arr[idx]);
+            solve(arr,target-arr[idx],idx+1,temp);
+            temp.pop_back();
         }
-        return dp[i][sum] = (solve(arr, n, sum + arr[i], Tsum, i + 1, dp) || solve(arr, n, sum, Tsum, i + 1, dp));
     }
-    int equalPartition(int N, int arr[])
-    {
-        int Tsum = 0;
-        for (int i = 0; i < N; i++)
-            Tsum += arr[i];
-        vector<vector<int>> dp(N + 1, vector<int>(Tsum + 1, -1));
-        return solve(arr, N, 0, Tsum, 0, dp);
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        sort(candidates.begin(),candidates.end());
+        vector<int> temp;
+        solve(candidates,target,0,temp);
+        return ans;
     }
 };
