@@ -1,39 +1,29 @@
-/*
-    Time Complexity : O(2^N)
-    Space Complexity : O(N)
-
-    Where 'N' is the number of students.
-*/
-
-#include <climits>
-int ans = INT_MAX;
-int tugOfWarHelper(int i, int subsetSum, int cnt, int totalSum, vector<int> &arr, int n)
+class Solution
 {
-    // base case
-    if (i == n || cnt >= (n / 2))
+public:
+    // Function to return Breadth First Traversal of given graph.
+    vector<int> bfsOfGraph(int V, vector<int> adj[])
     {
-        if (cnt == (n / 2))
+        vector<int> vis(V, 0);
+        queue<int> q;
+        q.push(0);
+        vector<int> ans;
+        vis[0] = 1;
+        while (!q.empty())
         {
-            ans = min(ans, abs(totalSum - 2 * subsetSum));
+            int node = q.front();
+            q.pop();
+            ans.push_back(node);
+            for (auto it : adj[node])
+            {
+                if (!vis[it])
+                {
+                    q.push(it);
+                    vis[it] = 1;
+                }
+            }
         }
-        return;
+
+        return ans;
     }
-
-    tugOfWarHelper(i + 1, subsetSum, cnt, totalSum, arr, n);
-
-    tugOfWarHelper(i + 1, subsetSum + arr[i], cnt + 1, totalSum, arr, n);
-}
-
-int tugOfWar(vector<int> &arr, int n)
-{
-    int totalSum = 0;
-    for (int i = 0; i < n; i++)
-    {
-        totalSum += arr[i];
-    }
-
-    // call the recursive function
-    tugOfWarHelper(0, 0, 0, totalSum, arr, n);
-
-    return ans;
-}
+};
