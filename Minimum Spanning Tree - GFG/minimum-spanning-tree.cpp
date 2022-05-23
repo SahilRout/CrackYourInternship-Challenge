@@ -9,40 +9,72 @@ class Solution
 {
 	public:
 	//Function to find sum of weights of edges of the Minimum Spanning Tree.
+	int findpar(int node,vector<int>&par)
+	{
+	    if(node==par[node])
+	    {
+	        return node;
+	    }
+	    return par[node]=findpar(par[node],par);
+	}
+	void Union(int u,int v,vector<int> &par,vector<int> &rank)
+	{
+	    u=findpar(u,par);
+	    v=findpar(v,par);
+	    if(rank[u]<rank[v])
+	    {
+	        par[u]=v;
+	    }
+	    else if(rank[u]>rank[v])
+	    {
+	        par[v]=u;
+	    }
+	    else{
+	        par[v]=u;
+	        rank[u]++;
+	    }
+	}
+	struct node{
+	    int u,v,wt;
+	    node(int a,int b,int c)
+	    {
+	        u=a;
+	        v=b;
+	        wt=c;
+	    }
+	};
+	static bool comp(node a,node b)
+	{
+	    return a.wt<b.wt;
+	}
     int spanningTree(int V, vector<vector<int>> adj[])
     {
-        vector<int> parent(V,-1);
-        vector<bool> mst(V,false);
-        vector<int> key(V,INT_MAX);
-        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> pq;
-        key[0]=0;
-        parent[0]=-1;
-        pq.push({0,0});
-        while(!pq.empty())
+        vector<node> edges;
+        vector<int> par(V);
+        vector<int> rank(V);
+        for(int i=0;i<V;i++)
         {
-            int node=pq.top().second;
-            pq.pop();
-            mst[node]=true;
-            for(auto it : adj[node])
+            for(auto it :adj[i])
             {
-                int v=it[0];
-                int wt=it[1];
-                if(mst[v]==false&&wt<key[v])
-                {
-                    key[v]=wt;
-                    parent[v]=node;
-                    pq.push({key[v],v});
-                }
+                edges.push_back(node(i,it[0],it[1]));
+            }
+            par[i]=i;
+            rank[i]=0;
+        }
+        sort(edges.begin(),edges.end(),comp);
+        vector<pair<int,int>> mst;
+        int ans=0;
+        for(auto it : edges)
+        {
+            if(findpar(it.u,par)!=findpar(it.v,par))
+            {
+                ans+=it.wt;
+                mst.push_back({it.u,it.v});
+                Union(it.u,it.v,par,rank);
             }
         }
         
-        int sum=0;
-        for(auto it : key)
-        {
-            sum+=it;
-        }
-        
-        return sum;
+        return ans;
     }
 };
 
