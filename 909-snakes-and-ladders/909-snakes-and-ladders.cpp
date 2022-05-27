@@ -3,6 +3,34 @@ public:
     int snakesAndLadders(vector<vector<int>>& board) {
         int n=board.size();
         vector<int> vis((n*n)+1,0);
+        map<int,pair<int,int>> mp;
+        int x=1;
+        bool flag=true;
+        for(int i=board.size()-1;i>=0;i--)
+        {
+            if(!flag)
+            {
+            for(int j=board[0].size()-1;j>=0;j--)
+            {
+               cout<<x<<" ";
+                mp[x].first=i;
+                mp[x].second=j;
+                x++;
+            }
+                flag=true;
+            }
+            else{
+                for(int j=0;j<board[0].size();j++)
+            {
+                    cout<<x<<" ";
+                mp[x].first=i;
+                mp[x].second=j;
+                x++;
+            }
+                flag=false;
+            }
+           cout<<endl;
+        }
         queue<int> q;
         q.push(1);
         vis[1]=1;
@@ -19,14 +47,11 @@ public:
                 {
                     int nextPos=currPos+i;
                     if(nextPos>n*n)break;
-                    int r=n-(nextPos-1)/n-1;
-                    int c=(nextPos-1)%n;
-                    if(r%2==n%2)
-                    {
-                        c=n-c-1;
-                    }
+                    int r=mp[nextPos].first;
+                    int c=mp[nextPos].second;
                     if(!vis[nextPos])
                     {
+                       // cout<<board[r][c]<<" ";
                         vis[nextPos]=1;
                         if(board[r][c]!=-1)q.push(board[r][c]);
                         else q.push(nextPos);
