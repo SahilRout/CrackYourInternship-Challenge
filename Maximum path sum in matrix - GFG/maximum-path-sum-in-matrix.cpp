@@ -9,29 +9,38 @@ using namespace std;
 
 class Solution{
 public:
-     int dp[501][501];
-    int solve(int i,int j,vector<vector<int>>& matrix)
-    {
-        
-        if(i==matrix.size()-1)
-        {
-            if(j>=0&&j<matrix[0].size())return matrix[i][j];
-        }
-        if(j<0||j>=matrix[0].size())return 0;
-        if(dp[i][j]!=-1)return dp[i][j];
-        return dp[i][j]=matrix[i][j]+max(solve(i+1,j,matrix),max(solve(i+1,j-1,matrix),solve(i+1,j+1,matrix)));
-    }
+    int getMaxUtil(int i, int j, int m, vector<vector<int>> &matrix, 
+vector<vector<int> > &dp){
+    
+    // Base Conditions
+    if(j<0 || j>=m)
+        return 0;
+    if(i==0)
+        return matrix[0][j];
+    
+    if(dp[i][j]!=-1) return dp[i][j];
+    
+    int up = matrix[i][j] + getMaxUtil(i-1,j,m,matrix,dp);
+    int leftDiagonal = matrix[i][j] + getMaxUtil(i-1,j-1,m,matrix,dp);
+    int rightDiagonal = matrix[i][j] + getMaxUtil(i-1,j+1,m,matrix,dp);
+    
+    return dp[i][j]= max(up,max(leftDiagonal,rightDiagonal));
+    
+}
     int maximumPath(int N, vector<vector<int>> matrix)
     {
-          int ans=0;
-        memset(dp,-1,sizeof(dp));
-        for(int i=0;i<matrix[0].size();i++)
-        {
-            int x=solve(0,i,matrix);
-           // cout<<x<<endl;
-            ans=max(ans,x);
-        }
-        return ans;
+            int n = matrix.size();
+    int m = matrix[0].size();
+    
+    vector<vector<int>> dp(n,vector<int>(m,-1));
+    
+    int maxi = INT_MIN;
+    
+    for(int j=0; j<m;j++){
+        int ans = getMaxUtil(n-1,j,m,matrix,dp);
+        maxi = max(maxi,ans);
+    }
+    return maxi;
     }
 };
 
