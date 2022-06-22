@@ -11,7 +11,7 @@ public:
         {
             for(int j=0;j<i;j++)
             {
-                if((nums[i]%nums[j]==0||nums[j]%nums[i]==0)&&dp[i]<=dp[j])
+                if(nums[i]%nums[j]==0&&dp[i]<=dp[j])
                 {
                     dp[i]=1+dp[j];
                     hash[i]=j;
