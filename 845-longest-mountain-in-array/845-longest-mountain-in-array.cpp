@@ -3,7 +3,7 @@ public:
     int longestMountain(vector<int>& arr) {
         int n=arr.size();
         int ans=0;
-        for(int i=1;i<n-1;)
+        for(int i=1;i<n-1;i++)
         {
             if(arr[i]>arr[i-1]&&arr[i]>arr[i+1])
             {
@@ -14,14 +14,14 @@ public:
                     j--;
                     cnt++;
                 }
-                while(i<n-1&&arr[i]>arr[i+1])
+                j=i;
+                while(j<n-1&&arr[j]>arr[j+1])
                 {
-                    i++;
+                    j++;
                     cnt++;
                 }
                 ans=max(ans,cnt);
             }
-            else i++;
             
         }
         
