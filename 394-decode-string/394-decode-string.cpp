@@ -1,35 +1,45 @@
 class Solution {
 public:
-    string solve(string &s,int &i)
-    {
-        string ans;
-        while(i<s.size()&&s[i]!=']')
-        {
-            if(isdigit(s[i]))
-            {
-                int k=0;
-                while(i<s.size()&&isdigit(s[i]))
-                {
-                    k=k*10+s[i]-'0';
-                    i++;
-                }
-                i++;
-                string temp=solve(s,i);
-                while(k--)
-                {
-                    ans+=temp;
-                }
-                i++;
-            }else{
-                ans+=s[i];
-                i++;
-            }
-        }
-        
-        return ans;
-    }
     string decodeString(string s) {
-        int i=0;
-        return solve(s,i);
+        stack<char> st;
+        int n=s.size();
+        for(int i=0;i<n;i++)
+        {
+            if(s[i]==']')
+            {
+                string temp="";
+                while(!st.empty()&&st.top()!='[')
+                {
+                    char x=st.top();
+                    st.pop();
+                    temp=x+temp;
+                }
+                st.pop();
+                string num="";
+                while(!st.empty()&&isdigit(st.top()))
+                {
+                    char x=st.top();
+                    st.pop();
+                    num=x+num;
+                }
+                int x=stoi(num);
+                string s="";
+                while(x--)
+                {
+                    for(auto it : temp)st.push(it);
+                }
+                    
+            }
+            else st.push(s[i]);
+        }
+        string ans="";
+        while(!st.empty())
+        {
+            char a=st.top();
+            ans+=a;
+            st.pop();
+        }
+        reverse(ans.begin(),ans.end());
+        return ans;
     }
 };
