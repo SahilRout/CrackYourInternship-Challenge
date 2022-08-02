@@ -1,47 +1,48 @@
 class Solution {
 public:
-    int helper(vector<vector<int>>&grid,int i,int j,int gridId)
+    int helper(vector<vector<int>>& grid,int i,int j,int m,int n,int color)
     {
-        if(i<0||j<0||i>=grid.size()||j>=grid.size()||grid[i][j]!=1)return 0;
-        grid[i][j]=gridId;
-        return 1+helper(grid,i-1,j,gridId)+helper(grid,i,j-1,gridId)+helper(grid,i+1,j,gridId)+helper(grid,i,j+1,gridId);
+        if(i<0||j<0||i>=m||j>=n||grid[i][j]!=1)return 0;
+        grid[i][j]=color;
+        return 1+helper(grid,i-1,j,m,n,color)+helper(grid,i,j-1,m,n,color)+helper(grid,i+1,j,m,n,color)+helper(grid,i,j+1,m,n,color);
     }
     int largestIsland(vector<vector<int>>& grid) {
-        map<int,int> mp;
-        mp[0]=0;
         int n=grid.size();
-        int gridId=2;
-        for(int i=0;i<n;i++)
+        int color=2;
+        map<int,int> mp;
+        for(int i =0;i<n;i++)
         {
             for(int j=0;j<n;j++)
             {
                 if(grid[i][j]==1)
                 {
-                    int size=helper(grid,i,j,gridId);
-                    mp[gridId]=size;
-                    gridId++;
+                    mp[color]=helper(grid,i,j,n,n,color);
+                    color++;
                 }
             }
-        } 
-        int res=mp[2];
+        }
+        mp[0]=0;
+        int ans=mp[2];
         for(int i=0;i<n;i++)
         {
             for(int j=0;j<n;j++)
             {
-                if(grid[i][j]==0)
+                if(grid[i][j]==0){
+                    set<int> s;
+                  if(i>0)s.insert(grid[i-1][j]);
+                   if(j>0) s.insert(grid[i][j-1]);
+                   if(i<n-1)s.insert(grid[i+1][j]);
+                    if(j<n-1)s.insert(grid[i][j+1]);
+                    int tans=1;
+                for(auto it : s)
                 {
-                    set<int> v;
-                    if(i>0)v.insert(grid[i-1][j]);
-                    if(j>0)v.insert(grid[i][j-1]);
-                    if(i<n-1)v.insert(grid[i+1][j]);
-                    if(j<n-1)v.insert(grid[i][j+1]);
-                    int sum=1;
-                    for(int it : v)sum+=mp[it];
-                    res=max(res,sum);
+                    tans+=mp[it];
                 }
+                    ans=max(tans,ans);
+              }
             }
         }
         
-        return res;
+        return ans;
     }
 };
