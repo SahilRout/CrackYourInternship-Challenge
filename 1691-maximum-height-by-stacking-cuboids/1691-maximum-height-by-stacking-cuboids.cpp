@@ -9,8 +9,9 @@ public:
         int n=cuboids.size();
         vector<int> lis(n,0);
         lis[0]=cuboids[0][2];
-        int ans=INT_MIN;
-        for(int i=0;i<n;i++)
+        cout<<lis[0]<<endl;
+        int ans=lis[0];
+        for(int i=1;i<n;i++)
         {
             lis[i]=cuboids[i][2];
             for(int j=0;j<i;j++)
