@@ -57,7 +57,7 @@ public:
                 if(look)ans+=(lt*rf)+(lf*rt);
                 else ans+=(lt*rt)+(lf*rf);
             }
-            dp[i][j][look]=ans%1003;
+           // dp[i][j][look]=ans%1003;
         }
         return dp[i][j][look]=ans%1003;
     }
