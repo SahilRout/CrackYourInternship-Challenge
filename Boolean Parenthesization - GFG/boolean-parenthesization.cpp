@@ -12,7 +12,7 @@ public:
     vector<vector<vector<int>>> dp;
     int solve(int i,int j,string&s,bool look)
     {
-        if(i>j)return 0;
+       // if(i>j)return 0;
         if(i==j)
         {
             if(look)
